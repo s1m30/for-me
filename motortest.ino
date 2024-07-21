@@ -10,7 +10,6 @@ int speedPinLeft = 9; // PWM pin to control speed of left motor
 int speedPinRight = 10; // PWM pin to control speed of right motor
 
 void setup() {
-  // put your setup code here, to run once:
   // Set L298N Control Pins as Output
   pinMode(LeftMotorForward, OUTPUT);
   pinMode(LeftMotorBackward, OUTPUT);
@@ -21,23 +20,45 @@ void setup() {
   pinMode(speedPinLeft, OUTPUT);
   pinMode(speedPinRight, OUTPUT);
 
-  analogWrite(speedPinLeft, 255); // ENA pin
-  analogWrite(speedPinRight, 255); // ENB pin
+  // Stop the motors initially
+  moveStop();
+  Serial.begin(9600);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  for(int i=0; i<=4; i++){
-  moveForward();
-  delay(8000);
-  gradualTurnRight(500);
-  setMotorSpeed(255, 255);
-  gradualTurnRight(500); 
-  setMotorSpeed(255, 255);
-  };
-  moveStop();
+  gradualTurnRight(10000);
+  delay(60000);
+  // Test left motor speeds
+  testLeftMotorSpeeds();
 
+  // Test right motor speeds
+  testRightMotorSpeeds();
 }
+
+// Function to test left motor speeds from 0 to 255
+void testLeftMotorSpeeds() {
+  for (int speed = 0; speed <= 255; speed++) {
+    Serial.println(speed);
+    setMotorSpeed(speed,255);
+    moveForward(); // Set the direction for left motor
+    delay(2000); // Adjust delay for testing purposes
+  }
+  moveStop();
+  delay(1000); // Delay before testing the right motor
+}
+
+// Function to test right motor speeds from 0 to 255
+void testRightMotorSpeeds() {
+  for (int speed = 0; speed <= 255; speed++) {
+    Serial.println(speed);
+    setMotorSpeed(255,speed);
+    moveForward(); // Set the direction for right motor
+    delay(2000); // Adjust delay for testing purposes
+  }
+  moveStop();
+  delay(1000); // Delay before restarting the loop
+}
+
 
 void setMotorSpeed(int leftSpeed, int rightSpeed) {
   analogWrite(speedPinLeft, leftSpeed);
@@ -54,7 +75,6 @@ void moveStop() // Move Stop Function for Motor Driver.
 
 void moveForward() // Move Forward Function for Motor Driver.
 {
-  setMotorSpeed(255, 255);
   digitalWrite(RightMotorForward, HIGH);
   digitalWrite(RightMotorBackward, LOW);
   digitalWrite(LeftMotorForward, HIGH);
@@ -63,7 +83,6 @@ void moveForward() // Move Forward Function for Motor Driver.
 
 void moveBackward() // Move Backward Function for Motor Driver.
 {
-  setMotorSpeed(255, 255);
   digitalWrite(RightMotorForward, LOW);
   digitalWrite(RightMotorBackward, HIGH);
   digitalWrite(LeftMotorForward, LOW);
@@ -79,19 +98,9 @@ void slowDown() // Slow down the car
   digitalWrite(LeftMotorBackward, LOW);
 }
 
-//void gradualTurnRight(int duration) // Gradual turn right by adjusting motor speeds
-//{
-//  setMotorSpeed(200, 100); // Adjust these values for smoother turning
-//  digitalWrite(RightMotorForward, HIGH);
-//  digitalWrite(RightMotorBackward, LOW);
-//  digitalWrite(LeftMotorForward, HIGH);
-//  digitalWrite(LeftMotorBackward, LOW);
-//  delay(duration);
-//  moveStop();
-//}
 void gradualTurnRight(int duration) // Gradual turn right by adjusting motor speeds
 {
-  setMotorSpeed(200, 100); // Adjust these values for smoother turning
+  setMotorSpeed(255, 255); // Adjust these values for smoother turning
   digitalWrite(RightMotorForward, HIGH);
   digitalWrite(RightMotorBackward, LOW);
   digitalWrite(LeftMotorForward, LOW);
@@ -99,7 +108,6 @@ void gradualTurnRight(int duration) // Gradual turn right by adjusting motor spe
   delay(duration);
   moveStop();
 }
-
 
 void gradualTurnLeft(int duration) // Gradual turn left by adjusting motor speeds
 {
@@ -110,13 +118,4 @@ void gradualTurnLeft(int duration) // Gradual turn left by adjusting motor speed
   digitalWrite(LeftMotorBackward, LOW);
   delay(duration);
   moveStop();
-}
-
-void slowDown() // Slow down the car
-{
-  setMotorSpeed(128, 128);
-  digitalWrite(RightMotorForward, HIGH);
-  digitalWrite(RightMotorBackward, LOW);
-  digitalWrite(LeftMotorForward, HIGH);
-  digitalWrite(LeftMotorBackward, LOW);
 }
