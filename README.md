@@ -6,3 +6,5 @@ https://www.hackster.io/Kenan-Paralija/multi-functional-2wd-driving-straight-rob
 https://www.instructables.com/How-to-Make-a-Robot-Car-Drive-Straight-and-Turn-Ex/
 https://www.hackster.io/Kenan-Paralija/making-a-2wd-arduino-vehicle-drive-straight-ae40ee
 digitaltown.co.uk/project2RobotCar.php
+![PXL_20240724_150751178 MP](https://github.com/user-attachments/assets/1a5e6c07-c0ee-4770-b8bc-c13171de9587)
+![PXL_20240724_101332272](https://github.com/user-attachments/assets/664d53f1-93e0-479b-b262-7a2ad9abfbf7)
